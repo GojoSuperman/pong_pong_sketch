@@ -12,6 +12,16 @@
   <img src="https://img.shields.io/badge/flutter_analyze-0_issues-B8E6D2?logoColor=2B2B2B" alt="0 issues" />
 </p>
 
+<p align="center">
+  <a href="https://gojosuperman.github.io/pong_pong_sketch/">
+    <img src="https://img.shields.io/badge/▶_지금_플레이하기-PLAY_NOW-FFB3C6?style=for-the-badge&logoColor=2B2B2B" alt="Play Now" />
+  </a>
+</p>
+
+<p align="center">
+  <sub>설치 없이 브라우저에서 바로 플레이 → <a href="https://gojosuperman.github.io/pong_pong_sketch/">gojosuperman.github.io/pong_pong_sketch</a></sub>
+</p>
+
 ---
 
 ## ✨ 핵심 게임 기믹 (Core Gameplay)
@@ -115,7 +125,8 @@ lib/
 
 ## 🚀 실행 방법 (How to Run)
 
-> Flutter SDK(3.11 이상)가 설치되어 있어야 합니다.
+> 🎮 **그냥 플레이만 하려면** 설치가 필요 없습니다 — [여기서 바로 플레이](https://gojosuperman.github.io/pong_pong_sketch/)하세요.
+> 아래는 **로컬에서 소스를 빌드·개발**하려는 경우의 안내이며, Flutter SDK(3.11 이상)가 필요합니다.
 
 ```bash
 # 1) 저장소 클론
