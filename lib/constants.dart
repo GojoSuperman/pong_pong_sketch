@@ -33,6 +33,13 @@ const List<Color> kPastelPalette = <Color>[
   kPastelYellow,
 ];
 
+/// 파스텔 피치 — 핑크와 옐로우 사이를 잇는 따뜻한 중간 톤.
+/// 정화도 HUD 게이지 그라데이션을 한층 화사하게 만드는 데 쓴다.
+const Color kPastelPeach = Color(0xFFFFD0A8);
+
+/// 몽이 볼터치 색 — 발그레한 파스텔 핑크 (구름 몸체 위 양 볼).
+const Color kPlayerBlushColor = Color(0xFFFFC2D1);
+
 // ─────────────────────────────────────────────
 // 🖼 게임 고정 해상도 (Fixed Resolution)
 // ─────────────────────────────────────────────
@@ -398,6 +405,10 @@ const Color kWatercolorGridColor = Color(0x5586B8D8);
 // ─────────────────────────────────────────────
 // 🧹 스테이지 4: 습격당한 낙서장 (지우개 군단)
 // ─────────────────────────────────────────────
+
+/// 스테이지 4 '습격당한 낙서장' 격자 선 색 — 지우개 얼룩이 번진 듯한 연보라.
+/// 스테이지마다 격자 톤을 달리하는 규칙(S2 청사진 블루, S3 워터블루)을 따른다.
+const Color kSmudgeGridColor = Color(0xFFD3C4E8);
 
 /// 지우개 몬스터 크기 (px).
 const double kEraserWidth = 34.0;

@@ -22,10 +22,11 @@ class Stage4 extends Component {
     // 시작 베이스 땅은 화면 최하단 부근 — 종스크롤이라 위로 쌓아 올린다.
     const groundTop = kStageGroundTop;
 
-    // 습격당한 낙서장 — 스케치북 격자 배경.
+    // 습격당한 낙서장 — 지우개 얼룩이 번진 듯한 연보라 격자 배경.
     add(SketchbookBackground(
       position: Vector2(0, -screen.y),
       size: Vector2(screen.x, screen.y * 3),
+      gridColor: kSmudgeGridColor,
     ));
 
     // 시작 발판 — 화면 하단 중앙.

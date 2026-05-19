@@ -89,10 +89,10 @@ class PurificationHud extends PositionComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    // 핑크→민트→옐로우가 바 전체 폭에 걸쳐 흐르는 가로 그라데이션.
+    // 핑크→피치→옐로우→민트가 바 전체 폭에 걸쳐 흐르는 가로 그라데이션.
     // 채움 폭이 줄어도 색 위치가 고정돼, 모은 에너지가 융합되는 느낌을 준다.
     _fillPaint.shader = const LinearGradient(
-      colors: [kPastelPink, kPastelMint, kPastelYellow],
+      colors: [kPastelPink, kPastelPeach, kPastelYellow, kPastelMint],
     ).createShader(
       Rect.fromLTWH(_barLeft, _barTop, kHudBarWidth, kHudBarHeight),
     );

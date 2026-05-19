@@ -128,6 +128,13 @@ class Player extends PositionComponent
     ..color = kOutlineColor
     ..style = PaintingStyle.fill;
 
+  final Paint _blushPaint = Paint()
+    ..color = kPlayerBlushColor
+    ..style = PaintingStyle.fill;
+
+  /// 솜사탕 구름 몸체 실루엣 — onLoad에서 한 번만 만들어 캐시한다.
+  late final Path _bodyPath;
+
   // ─────────────────────────────────────────────
   // 라이프사이클
   // ─────────────────────────────────────────────
@@ -136,6 +143,8 @@ class Player extends PositionComponent
     await super.onLoad();
     // 소환 시점의 위치를 낙사 리셋 기준점으로 저장.
     _spawnPosition = position.clone();
+    // 둥실둥실한 구름 몸체 윤곽을 미리 만들어 캐시한다.
+    _bodyPath = _buildPuffPath();
     // 지우개(EraserEnemy)와의 충돌 감지를 위한 히트박스.
     add(RectangleHitbox());
   }
@@ -641,6 +650,7 @@ class Player extends PositionComponent
     canvas.save();
     canvas.translate(0, bodyOffsetY);
     _renderBody(canvas);
+    _renderBlush(canvas);
     _renderEyes(canvas);
     canvas.restore();
 
@@ -650,15 +660,60 @@ class Player extends PositionComponent
     }
   }
 
-  /// 둥글둥글한 라운드 사각형 몸체 — 핸드드로잉 느낌.
+  /// 둥실둥실한 솜사탕 구름 몸체 — 흰 면 + 검은 외곽선 2dp.
   void _renderBody(Canvas canvas) {
-    final body = RRect.fromRectAndRadius(
-      Offset.zero & Size(width, height),
-      Radius.circular(width * 0.35),
-    );
-    // 안쪽 흰 면 + 검은 외곽선 2dp.
-    canvas.drawRRect(body, _fillPaint);
-    canvas.drawRRect(body, _outlinePaint);
+    canvas.drawPath(_bodyPath, _fillPaint);
+    canvas.drawPath(_bodyPath, _outlinePaint);
+  }
+
+  /// 솜사탕 정령 '몽이'의 폭신한 구름 실루엣 Path를 만든다.
+  ///
+  /// 타원 외곽을 따라 잔잔한 혹(lobe)을 주고, 고정 시드 난수로 미세한 손그림
+  /// 흔들림을 더한다. 둥근 사각형이 아닌 둥글둥글 부푼 정령 몸체가 된다.
+  Path _buildPuffPath() {
+    const lobes = 7; // 외곽을 도는 부드러운 혹의 수
+    const bumpDepth = 0.085; // 혹의 깊이 (반경 대비 비율)
+    const steps = 80; // 외곽 분할 수 — 클수록 매끄럽다
+    final cx = width / 2;
+    final cy = height / 2;
+    final rx = width * 0.45;
+    final ry = height * 0.42;
+    // 고정 시드 — 매번 같은 손그림 윤곽을 재현한다(CLAUDE.md 핸드드로잉 규칙).
+    final jitter = Random(7);
+
+    final path = Path();
+    for (var i = 0; i < steps; i++) {
+      final angle = i / steps * 2 * pi;
+      // 혹 + 미세한 흔들림으로 반경을 변조한다.
+      final wobble = 1 +
+          bumpDepth * sin(lobes * angle) +
+          (jitter.nextDouble() - 0.5) * 0.03;
+      final x = cx + cos(angle) * rx * wobble;
+      final y = cy + sin(angle) * ry * wobble;
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+    path.close();
+    return path;
+  }
+
+  /// 양 볼의 발그레한 파스텔 볼터치 — 핸드드로잉 캐릭터의 귀여움을 살린다.
+  void _renderBlush(Canvas canvas) {
+    final cheekY = height * 0.57;
+    final cheekGap = width * 0.27;
+    for (final dir in const [-1, 1]) {
+      canvas.drawOval(
+        Rect.fromCenter(
+          center: Offset(width / 2 + dir * cheekGap, cheekY),
+          width: width * 0.22,
+          height: height * 0.14,
+        ),
+        _blushPaint,
+      );
+    }
   }
 
   /// 귀여운 눈 두 개 — 평소엔 바라보는 방향, 눈 굴리기 딴짓 중엔 그 연출을,
