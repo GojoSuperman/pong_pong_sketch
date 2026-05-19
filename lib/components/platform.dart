@@ -36,6 +36,10 @@ class Platform extends PositionComponent
   /// 발판의 현재 상태 (기본값: monochrome).
   PlatformType type = PlatformType.monochrome;
 
+  /// 밟기 전(monochrome) 발판 면의 기본 색.
+  /// 특수 발판이 잉크·물감 톤으로 바꿔 끼울 수 있도록 getter로 노출한다.
+  Color get monochromeColor => kMonochromeFill;
+
   // ── 렌더용 Paint (매 프레임 재생성 방지를 위해 필드로 보관) ──
   final Paint _fillPaint = Paint()..style = PaintingStyle.fill;
 
@@ -71,7 +75,7 @@ class Platform extends PositionComponent
     // colored → index로 파스텔 팔레트(핑크/민트/옐로우) 순환 매칭.
     _fillPaint.color = type == PlatformType.colored
         ? kPastelPalette[index % kPastelPalette.length]
-        : kMonochromeFill;
+        : monochromeColor;
 
     // 1) 안쪽 면 채우기 (monochrome / colored).
     canvas.drawRRect(body, _fillPaint);

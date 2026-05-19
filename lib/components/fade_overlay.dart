@@ -7,8 +7,9 @@ enum _FadePhase { idle, fadingOut, fadingIn }
 
 /// 화면 전체를 덮는 검은 페이드 오버레이.
 ///
-/// 낙사 시 화면을 부드럽게 어둡혔다(Fade Out) 다시 밝히며(Fade In),
-/// 완전히 어두워진 순간 콜백을 호출해 그 사이에 리셋이 일어나게 한다.
+/// 낙사·스테이지 전환 시 화면을 부드럽게 어둡혔다(Fade Out) 다시 밝히며
+/// (Fade In), 완전히 어두워진 순간 콜백을 호출해 그 사이에 리셋·무대 교체가
+/// 일어나게 한다.
 ///
 /// Future/비동기 없이 [update] 기반 상태 머신으로만 동작하므로
 /// 타이밍이 결정적이고, 리셋 로직과 꼬일 여지가 없다.
@@ -38,11 +39,12 @@ class FadeOverlay extends PositionComponent {
   /// 연출 진행 중인지 여부.
   bool get isPlaying => _phase != _FadePhase.idle;
 
-  /// 낙사 연출 시작 — 어두워졌다(0.2s) 다시 밝아진다(0.3s).
+  /// 페이드 전환 시작 — 어두워졌다(0.2s) 다시 밝아진다(0.3s).
   ///
-  /// [onFullyDark] : 화면이 완전히 검은 순간 1회 호출 (이때 리셋 처리).
+  /// 낙사 리셋과 스테이지 전환에 공용으로 쓴다.
+  /// [onFullyDark] : 화면이 완전히 검은 순간 1회 호출 (리셋·무대 교체 처리).
   /// [onComplete]  : 페이드 인까지 모두 끝난 뒤 1회 호출.
-  void playDeathSequence({
+  void playFadeTransition({
     required VoidCallback onFullyDark,
     required VoidCallback onComplete,
   }) {

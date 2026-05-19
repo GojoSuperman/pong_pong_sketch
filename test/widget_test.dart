@@ -1,30 +1,21 @@
-// This is a basic Flutter widget test.
+// 퐁퐁 스케치 — 게임 위젯 스모크 테스트.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// 기본 보일러플레이트(카운터 MyApp 테스트)를 대체한다.
+// 이 프로젝트는 Flame 게임이므로, GameWidget<PongPongGame>이
+// 예외 없이 정상적으로 마운트·렌더되는지만 가볍게 확인한다.
 
-import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:pong_pong_sketch/main.dart';
+import 'package:pong_pong_sketch/pong_pong_game.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('게임 위젯이 정상적으로 로드된다', (WidgetTester tester) async {
+    // 게임 위젯을 빌드하고 한 프레임 진행.
+    await tester.pumpWidget(
+      GameWidget<PongPongGame>(game: PongPongGame()),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // 위젯 트리에 GameWidget이 한 개 존재하면 정상 마운트로 간주.
+    expect(find.byType(GameWidget<PongPongGame>), findsOneWidget);
   });
 }
