@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 
 import '../constants.dart';
+import '../helpers/audio_manager.dart';
 import '../pong_pong_game.dart';
 
 /// 발판(Platform)의 상태 — CLAUDE.md의 Core State 정의를 따른다.
@@ -54,6 +55,8 @@ class Platform extends PositionComponent
   void changeToColored() {
     if (type == PlatformType.colored) return;
     type = PlatformType.colored;
+    // 정화 효과음 — 위 중복 가드 덕에 발판 한 장당 한 번만 울린다.
+    AudioManager.playPurify();
   }
 
   /// 낙사 리셋 시 호출 — 발판을 다시 흑백 상태로 되돌린다.

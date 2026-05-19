@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
 
 import '../constants.dart';
+import '../helpers/audio_manager.dart';
 import '../pong_pong_game.dart';
 import 'platform.dart';
 import 'player.dart';
@@ -93,6 +94,7 @@ class EraserEnemy extends PositionComponent
     final enemyMiddle = position.y + height / 2;
     if (player.isDescending && playerFoot < enemyMiddle) {
       // 밟혔다 — 지우개 가루를 터뜨리며 사라지고, 몽이는 통통 튀어오른다.
+      AudioManager.playStomp();
       game.world.add(createEraserCrumbs(position + size / 2));
       removeFromParent();
       player.bounceOffStomp();

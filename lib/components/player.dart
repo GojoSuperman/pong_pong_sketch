@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
 import '../constants.dart';
+import '../helpers/audio_manager.dart';
 import '../pong_pong_game.dart';
 import 'dust_particle.dart';
 import 'ground.dart';
@@ -179,6 +180,9 @@ class Player extends PositionComponent
   /// 1단/2단 점프를 발동한다.
   void _jump() {
     if (_jumpsRemaining <= 0) return;
+
+    // 점프 효과음 — 1단·2단 점프 모두에서 울린다.
+    AudioManager.playJump();
 
     // 첫 점프는 강하게, 2단 점프는 부드럽게 약간 약하게.
     final isFirstJump = _jumpsRemaining == 2;

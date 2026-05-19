@@ -13,6 +13,7 @@ import 'components/player.dart';
 import 'components/purification_hud.dart';
 import 'components/sketchbook_background.dart';
 import 'constants.dart';
+import 'helpers/audio_manager.dart';
 import 'scenes/stage_1.dart';
 import 'scenes/stage_2.dart';
 import 'scenes/stage_3.dart';
@@ -71,6 +72,12 @@ class PongPongGame extends FlameGame
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    // 0) 사운드 인프라 — 오디오를 메모리에 미리 캐시하고 스테이지 1 BGM을
+    //    루프 재생한다. 파일 미배치 시 AudioManager가 가드해 게임은
+    //    사운드 없이 정상 진행된다.
+    await AudioManager.preload();
+    AudioManager.startBgm();
 
     // 1) 레벨 — 스테이지 1을 카메라가 비추는 world에 올린다.
     _stage = Stage1();
@@ -183,6 +190,8 @@ class PongPongGame extends FlameGame
   void onStageClear() {
     if (isStageCleared) return;
     isStageCleared = true;
+    // 100% 정화 달성 — 기존 BGM을 멈추고 승리 팡파르를 1회 울린다.
+    AudioManager.playVictory();
     // 몽이가 상단 배너 아래 공간에서 춤추도록 카메라 시점을 맞춘다.
     // isStageCleared=true라 update의 카메라 추적이 멈춰 이 위치가 유지된다.
     camera.viewfinder.position = Vector2(
@@ -225,6 +234,8 @@ class PongPongGame extends FlameGame
         _currentStage = next;
         _stage = _createStage(next);
         world.add(_stage);
+        // 새 스테이지 시작 — 클리어 팡파르 때 멈춘 BGM을 다시 루프 재생한다.
+        AudioManager.startBgm();
         // 3) 몽이를 시작 위치로(축하 상태 해제), 카메라를 바닥 기준으로 재설정.
         _player.resetToSpawn();
         _setupCamera();
